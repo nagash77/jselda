@@ -8,9 +8,14 @@ jselda.main = function(canvas) {
 	var context = mainCanvas.getContext('2d');
 
 	function main () {
+	  var now = Date.now();
+	  var delta = now - then;
+
 	  handleInput();
-	  update();
+	  update(delta / 1000);
 	  render();
+
+	  then = now;
 	};
 
 	function handleInput() {
@@ -22,8 +27,10 @@ jselda.main = function(canvas) {
 	}
 
 	function render() {
-		
+
 	}
 
+	var then = Date.now();
 	setInterval(main, 1);
+
 };
