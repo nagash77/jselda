@@ -1,12 +1,17 @@
+<!DOCTYPE HTML>
 <html>
 
 <head>
 	<title>JSelda</title>
-	<script type="text/javascript" src="scripts/jselda.js" />
+	<script type="text/javascript" src="scripts/jselda.js"></script>
 </head>
 
 <body>
-
+	<canvas id="gameCanvas" width="600" height="800"></canvas>
+	<script>
+		var canvas = document.getElementById('gameCanvas');
+		jselda.main(canvas);		
+	</script>
 </body>
 
 </html>
