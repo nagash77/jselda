@@ -10,7 +10,7 @@ ctx.fillRect (0, 0, 800, 800);
 
 //setup our hero object
 var heroObj = {
-	speed   : 175, // movement in pixels per second
+	speed   : 256, // movement in pixels per second
 	x       : canvas.width / 2, //x coordinate position
 	y       : canvas.height / 2, //y coordinate position
 	updateX : function(newX) {
@@ -45,13 +45,17 @@ heroImageObj.onload = (function() {
 
 // Handle keyboard controls
 var keysDown = {};
-
+keysDown['activeInput'] = []; //this is to form a queue of the movement buttons pushed so that you can only go in one direction at a time to mimic old school controls (ie no diagnals)
 addEventListener("keydown", function (e) {
 	keysDown[e.keyCode] = true;
+	if ($.inArray(e.keyCode, keysDown['activeInput']) < 0){
+		keysDown['activeInput'].push(e.keyCode);
+	}
 }, false);
 
 addEventListener("keyup", function (e) {
 	delete keysDown[e.keyCode];
+	keysDown['activeInput'].splice($.inArray(e.keyCode, keysDown['activeInput']),1);
 }, false);
 
 var handleInput = function() {
@@ -59,17 +63,21 @@ var handleInput = function() {
 };
 
 var update = function(modifier) {
-	if (38 in keysDown) { // Player holding up
-		heroObj.updateY(heroObj.y -= heroObj.speed * modifier)
-	}
-	if (40 in keysDown) { // Player holding down
-		heroObj.updateY(heroObj.y += heroObj.speed * modifier)
-	}
-	if (37 in keysDown) { // Player holding left
-		heroObj.updateX(heroObj.x -= heroObj.speed * modifier)
-	}
-	if (39 in keysDown) { // Player holding right
-		heroObj.updateX(heroObj.x += heroObj.speed * modifier)
+	if (keysDown['activeInput'].length >= 1) {
+
+
+		if (keysDown['activeInput'][0] == 38 || keysDown['activeInput'][0] == 87) { // Player holding up
+			heroObj.updateY(heroObj.y -= heroObj.speed * modifier)
+		}
+		if (keysDown['activeInput'][0] == 40 || keysDown['activeInput'][0] == 83) { // Player holding down
+			heroObj.updateY(heroObj.y += heroObj.speed * modifier)
+		}
+		if (keysDown['activeInput'][0] == 37 || keysDown['activeInput'][0] == 65) { // Player holding left
+			heroObj.updateX(heroObj.x -= heroObj.speed * modifier)
+		}
+		if (keysDown['activeInput'][0] == 39 || keysDown['activeInput'][0] == 68) { // Player holding right
+			heroObj.updateX(heroObj.x += heroObj.speed * modifier)
+		}
 	}
 };
 
