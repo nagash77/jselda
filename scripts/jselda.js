@@ -4,8 +4,10 @@ var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 800;
-document.body.appendChild(canvas);
+$('body').append(canvas);
 
+ctx.fillStyle = "rgba(0, 0, 255, .5)";
+ctx.fillRect(25, 25, 125, 125);
 
 var heroObj = {
 	speed : 256 // movement in pixels per second
