@@ -1,12 +1,23 @@
+//GLOBALS
+NUMBER_OF_TILES_VERT = 20
+NUMBER_OF_TILES_HOR = 36
+body = document.body
+unit = Math.max(body.scrollHeight, body.clientHeight) / NUMBER_OF_TILES_VERT
+h = unit * NUMBER_OF_TILES_VERT
+w = unit * NUMBER_OF_TILES_HOR
+
+
+
+
 // Create the canvas
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
-canvas.width = 800;
-canvas.height = 800;
+canvas.width = w;
+canvas.height = h;
 $('body').append(canvas);
 
 ctx.fillStyle = "rgb(42,161,87)";
-ctx.fillRect (0, 0, 800, 800);
+ctx.fillRect (0, 0, w, h);
 
 //setup our hero object
 var heroObj = {
@@ -16,8 +27,8 @@ var heroObj = {
 	updateX : function(newX) {
 				if(newX <= 0) {
 					heroObj.x = 0;
-				}else if(newX >= canvas.width - 50) {
-					 heroObj.x = canvas.width - 50;
+				}else if(newX >= canvas.width - unit) {
+					 heroObj.x = canvas.width - unit;
 				}else {
 					 heroObj.x = newX;
 				}
@@ -25,8 +36,8 @@ var heroObj = {
 	updateY : function(newY) {
 				if(newY <= 0) {
 					heroObj.y = 0;
-				}else if(newY >= canvas.height -80) {
-					 heroObj.y = canvas.height - 80;
+				}else if(newY >= canvas.height - unit) {
+					 heroObj.y = canvas.height - unit;
 				}else {
 					 heroObj.y = newY;
 				}
@@ -83,10 +94,10 @@ var update = function(modifier) {
 
 var render = function() {
 	ctx.fillStyle = "rgb(42,161,87)";
-	ctx.fillRect (0, 0, 800, 800);
+	ctx.fillRect (0, 0, w, h);
 
 	if(heroReady) {
-		ctx.drawImage(heroImageObj, heroObj.x, heroObj.y, 50, 80);
+		ctx.drawImage(heroImageObj, heroObj.x, heroObj.y, unit, unit);
 	}
 };
 
