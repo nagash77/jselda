@@ -10,9 +10,28 @@ ctx.fillRect (0, 0, 800, 800);
 
 //setup our hero object
 var heroObj = {
-	speed : 175, // movement in pixels per second
-	x     : canvas.width / 2, //x coordinate position
-	y     : canvas.height / 2 //y coordinate position
+	speed   : 175, // movement in pixels per second
+	x       : canvas.width / 2, //x coordinate position
+	y       : canvas.height / 2, //y coordinate position
+	updateX : function(newX) {
+				if(newX <= 0) {
+					heroObj.x = 0;
+				}else if(newX >= canvas.width - 50) {
+					 heroObj.x = canvas.width - 50;
+				}else {
+					 heroObj.x = newX;
+				}
+			},
+	updateY : function(newY) {
+				if(newY <= 0) {
+					heroObj.y = 0;
+				}else if(newY >= canvas.height -80) {
+					 heroObj.y = canvas.height - 80;
+				}else {
+					 heroObj.y = newY;
+				}
+				
+			}
 };
 
 var heroReady = false;
@@ -41,16 +60,16 @@ var handleInput = function() {
 
 var update = function(modifier) {
 	if (38 in keysDown) { // Player holding up
-		heroObj.y -= heroObj.speed * modifier;
+		heroObj.updateY(heroObj.y -= heroObj.speed * modifier)
 	}
 	if (40 in keysDown) { // Player holding down
-		heroObj.y += heroObj.speed * modifier;
+		heroObj.updateY(heroObj.y += heroObj.speed * modifier)
 	}
 	if (37 in keysDown) { // Player holding left
-		heroObj.x -= heroObj.speed * modifier;
+		heroObj.updateX(heroObj.x -= heroObj.speed * modifier)
 	}
 	if (39 in keysDown) { // Player holding right
-		heroObj.x += heroObj.speed * modifier;
+		heroObj.updateX(heroObj.x += heroObj.speed * modifier)
 	}
 };
 
