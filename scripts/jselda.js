@@ -22,6 +22,8 @@ heroImageObj.onload = (function() {
 	heroObj.imageObj = heroImageObj;
 	heroReady = true;
 })();
+
+
 // Handle keyboard controls
 var keysDown = {};
 
@@ -34,7 +36,7 @@ addEventListener("keyup", function (e) {
 }, false);
 
 var handleInput = function() {
-
+	//not sure waht is going to go in here yet
 };
 
 var update = function(modifier) {
