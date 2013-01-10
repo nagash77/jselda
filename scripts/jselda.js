@@ -5,8 +5,7 @@ body = document.body
 unit = Math.max(body.scrollHeight, body.clientHeight) / NUMBER_OF_TILES_VERT
 h = unit * NUMBER_OF_TILES_VERT
 w = unit * NUMBER_OF_TILES_HOR
-
-
+collisionMap = {};
 
 
 // Create the canvas
