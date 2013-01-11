@@ -1,4 +1,4 @@
-collisionMap['0,0'] = (function() {
+COLLISION_MAP['0_0'] = (function() {
 
 var rows = [
 
