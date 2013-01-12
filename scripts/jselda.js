@@ -25,9 +25,11 @@ var heroObj = {
 	speed           : 256, // movement in pixels per second
 	x               : canvas.width / 2, //x coordinate position
 	y               : canvas.height / 2, //y coordinate position
-	traversalMatrix : [0],
+	traversalMatrix : [],
 	updateX 		: function(newX) {
-						if(!determineMapCollisions(newX,heroObj.y,'',heroObj.traversalMatrix,UNIT,UNIT)){
+						console.log(!determineMapCollisions(newX,heroObj.y,heroObj.traversalMatrix,UNIT,UNIT));
+						if(!determineMapCollisions(newX,heroObj.y,heroObj.traversalMatrix,UNIT,UNIT)){
+							console.log('moving');
 							if(newX <= 0) {
 								heroObj.x = 0;
 							}else if(newX >= canvas.width - UNIT) {
@@ -35,20 +37,26 @@ var heroObj = {
 							}else {
 								 heroObj.x = newX;
 							}
+						}else {
+							console.log('blocked');
+							return;
 						}
 					},
 	updateY 		: function(newY) {
-						if(newY <= 0) {
-							heroObj.y = 0;
-						}else if(newY >= canvas.height - UNIT) {
-							 heroObj.y = canvas.height - UNIT;
-						}else {
-							 heroObj.y = newY;
+						if(!determineMapCollisions(heroObj.x,newY,heroObj.traversalMatrix,UNIT,UNIT)){
+							if(newY <= 0) {
+								heroObj.y = 0;
+							}else if(newY >= canvas.height - UNIT) {
+								 heroObj.y = canvas.height - UNIT;
+							}else {
+								 heroObj.y = newY;
+							}
 						}
 						
 					}
-
 };
+
+heroObj.traversalMatrix.push(0);
 
 var heroReady = false;
 var heroImageObj = new Image();
@@ -106,9 +114,23 @@ var render = function() {
 	}
 };
 
-var determineMapCollisions = function(x,y,mapMatrix,traversalMatrix,objHeight,objWidth) {
+var determineMapCollisions = function(x,y,traversalMatrix,objHeight,objWidth) {
 	//traversalMatrix represents the values that an object can cross over (by default only 0, but potentially adding a value for something like a raft that would allow user to traverse water)
-	determineOccupiedTiles(x,y,objHeight, objWidth);
+	var occupiedTiles = determineOccupiedTiles(x,y,objHeight, objWidth);
+	var col_map = COLLISION_MAP[CURRENT_MAP].getMap();
+
+	var terrainTypesOfOccupiedTiles = [];
+	for(var tile in occupiedTiles) {
+			terrainTypesOfOccupiedTiles.push(col_map[occupiedTiles[tile].tileY][occupiedTiles[tile].tileX]);
+	}
+	
+	var uniqueTerrain = _.uniq(terrainTypesOfOccupiedTiles);
+
+	//determine if the object is capable of walking over the terrain type.  The collision map represents different types of terrain that some things can walk across (like water for instance)
+	if(_.difference(uniqueTerrain,traversalMatrix).length > 0) {
+		return true; //collision detected, stop movement
+	}
+
 	return false;
 };
 
@@ -119,8 +141,11 @@ var determineOccupiedTiles = function(x,y,objHeight,objWidth) {
 
 	for (var i = upperLeftXTilePos;i<=upperLeftXTilePos + (Math.ceil((objWidth/UNIT) * 10) / 10);i++){
 		for (var j = upperLeftYTilePos;j<=upperLeftYTilePos + (Math.ceil((objHeight/UNIT) * 10) / 10);j++){
-			var tileCoords = i + '_' + j;
-			occupiedTiles.push(tileCoords);
+			var tileObj = {};
+			tileObj['tileCoords'] = i + '_' + j;
+			tileObj['tileX'] = i;
+			tileObj['tileY'] = j;
+			occupiedTiles.push(tileObj);
 		};
 	};
 
