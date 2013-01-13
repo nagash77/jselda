@@ -27,9 +27,7 @@ var heroObj = {
 	y               : canvas.height / 2, //y coordinate position
 	traversalMatrix : [],
 	updateX 		: function(newX) {
-						console.log(!determineMapCollisions(newX,heroObj.y,heroObj.traversalMatrix,UNIT,UNIT));
 						if(!determineMapCollisions(newX,heroObj.y,heroObj.traversalMatrix,UNIT,UNIT)){
-							console.log('moving');
 							if(newX <= 0) {
 								heroObj.x = 0;
 							}else if(newX >= canvas.width - UNIT) {
@@ -38,8 +36,11 @@ var heroObj = {
 								 heroObj.x = newX;
 							}
 						}else {
-							console.log('blocked');
-							return;
+							if(newX > heroObj.x) { //moving right
+								heroObj.x = (Math.ceil((heroObj.x / UNIT) * 10) / 10) * UNIT;
+							}else{
+								heroObj.x = ((Math.ceil(((heroObj.x / UNIT) * 10) / 10)) * UNIT) + 1;
+							}
 						}
 					},
 	updateY 		: function(newY) {
@@ -50,6 +51,12 @@ var heroObj = {
 								 heroObj.y = canvas.height - UNIT;
 							}else {
 								 heroObj.y = newY;
+							}
+						}else {
+							if(newY > heroObj.y) { //moving right
+								heroObj.y = (Math.ceil((heroObj.y / UNIT) * 10) / 10) * UNIT;
+							}else{
+								heroObj.y = ((Math.ceil(((heroObj.y / UNIT) * 10) / 10)) * UNIT) + 1;
 							}
 						}
 						
@@ -129,9 +136,9 @@ var determineMapCollisions = function(x,y,traversalMatrix,objHeight,objWidth) {
 	//determine if the object is capable of walking over the terrain type.  The collision map represents different types of terrain that some things can walk across (like water for instance)
 	if(_.difference(uniqueTerrain,traversalMatrix).length > 0) {
 		return true; //collision detected, stop movement
+	}else{
+		return false;
 	}
-
-	return false;
 };
 
 var determineOccupiedTiles = function(x,y,objHeight,objWidth) {
