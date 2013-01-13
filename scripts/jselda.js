@@ -6,6 +6,7 @@ UNIT = Math.max(body.scrollHeight, body.clientHeight) / NUMBER_OF_TILES_VERT
 h = UNIT * NUMBER_OF_TILES_VERT
 w = UNIT * NUMBER_OF_TILES_HOR
 COLLISION_MAP = {};  //this holds all the collision maps as they get loaded
+GRAPHICS_MAP = {};   //this map holds the key to what images are displayed where ont he map (ie 1 is a bush, 0 is nothing)
 CURRENT_MAP = '0_0'; //represents coordinates of the section of the world you are in and which map.js to load (ie 0.0.js)
 mapRdy = false; //default that map is not loaded.  main() loads this on each loop
 mapLoading = false;
@@ -116,6 +117,21 @@ var render = function() {
 	ctx.fillStyle = "rgb(42,161,87)";
 	ctx.fillRect (0, 0, w, h);
 
+	var graphMap = GRAPHICS_MAP[CURRENT_MAP].getMap();
+	for(graphicsRow in graphMap) {
+		for(i=0;i<=graphMap[graphicsRow].length;i++){
+			if(graphMap[graphicsRow][i] > 0) {
+				var x = (i * UNIT);
+				var y = (graphicsRow * UNIT);
+				var backgroundObj = new Image();
+				backgroundObj.onload = (function() {	
+					backgroundObj.src = GRAPHICS_MAP[CURRENT_MAP].getImageByID(graphMap[graphicsRow][i]);
+					ctx.drawImage(backgroundObj, x, y, UNIT, UNIT);
+				})();
+			}
+		}
+	}
+
 	if(heroReady) {
 		ctx.drawImage(heroImageObj, heroObj.x, heroObj.y, UNIT, UNIT);
 	}
@@ -165,6 +181,9 @@ var loadMap = function() {
 	
 	if(!(CURRENT_MAP in COLLISION_MAP) && !mapLoading) {
 		$.getScript('maps/collision/' + CURRENT_MAP + '.js', function(data, textStatus, jqxhr) {
+			mapRdy = true;
+		});
+		$.getScript('maps/graphics/' + CURRENT_MAP + '.js', function(data, textStatus, jqxhr) {
 			mapRdy = true;
 		});
 		mapRdy = false;
