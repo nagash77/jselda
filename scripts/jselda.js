@@ -1,8 +1,7 @@
 //GLOBALS
 NUMBER_OF_TILES_VERT = 20
 NUMBER_OF_TILES_HOR = 36
-body = document.body
-UNIT = Math.max(body.scrollHeight, body.clientHeight) / NUMBER_OF_TILES_VERT
+UNIT = $(window).height() / NUMBER_OF_TILES_VERT
 h = UNIT * NUMBER_OF_TILES_VERT
 w = UNIT * NUMBER_OF_TILES_HOR
 COLLISION_MAP = {};  //this holds all the collision maps as they get loaded
