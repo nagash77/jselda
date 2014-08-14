@@ -7,12 +7,12 @@ Far from finished.
 
 #TODO:
 
-*enemies
-*combat
-*more terrain maps
-*movement animation
-*inventory system
-*items
-*NPC interactions
-*all sorts of art
-*more than I can list
+* enemies
+* combat
+* more terrain maps
+* movement animation
+* inventory system
+* items
+* NPC interactions
+* all sorts of art
+* more than I can list
