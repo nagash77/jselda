@@ -1,0 +1,18 @@
+{
+  "name": "jselda",
+  "version": "1.0.0",
+  "description": "A Zelda-like game using HTML5 Canvas",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "compression": "^1.7.4",
+    "helmet": "^7.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+} 
